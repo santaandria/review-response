@@ -1,0 +1,51 @@
+% ============================================================
+%  main.tex 
+%  Author: Santa Andria
+%  Created: 2026
+%  License: MIT License
+% ============================================================
+\PassOptionsToPackage{hidelinks, colorlinks=true, linkcolor=clr-border, urlcolor=blue, citecolor=blue!60!black}{hyperref} % one of the package in review-macro autoload hyperref
+\documentclass[11pt, a4paper]{article}
+\usepackage[dvipsnames, svgnames, x11names]{xcolor} %must be loaded before review-macros and hyperref
+\usepackage{authblk}
+\usepackage{lipsum}
+\usepackage{review-config}
+\usepackage{review-macros}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[round]{natbib}
+\bibliographystyle{abbrvnat}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+% ── Toggle author notes off before submission ─────────────────────────────────
+% \setbool{draftmode}{false}
+
+% ── Document metadata ─────────────────────────────────────────────────────────
+\title{%
+  \Large Response to Editor and Reviewers\\[0.5em]
+  \normalsize \textit{\ManuscriptTitle}\\[0.3em]
+  \footnotesize \scshape Manuscript \ManuscriptID{} -- Revision Round \RevisionRound
+}
+\AuthorList
+\date{\SubmissionDate}
+% ──────────────────────────────────────────────────────────────────────────────
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{sections/00-cover-letter}
+\input{sections/10-reviewer}
+
+
+\bibliography{references}
+\end{document}

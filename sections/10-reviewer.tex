@@ -1,0 +1,78 @@
+% ============================================================
+%  sections/10-reviewer.tex
+%  Demo section showcasing review-macros (placeholder content).
+% ============================================================
+
+\section*{Response to Reviewer 1}
+
+% --- Comment 1: status DONE + author note with owner + before/after text --
+\begin{reviewitem}[\statusDone]{R1}{%
+  Reviewer comment goes here.
+}
+  \authornote[Note][Owner Name]{Internal note goes here.}
+
+  \response{%
+    Author response goes here.
+  }
+
+  \showchange{%
+    Original manuscript text goes here.
+  }{%
+    Revised manuscript text goes here.
+  }
+\end{reviewitem}
+
+% --- Comment 2: status MS CHANGE -------------------------------------------
+\begin{reviewitem}[\statusMS]{R1}{%
+  Reviewer comment goes here.
+}
+  \response{%
+    Author response goes here.
+  }
+\end{reviewitem}
+
+% --- Comment 3: status DISCUSSING + warning note + cross-reference --------
+\begin{reviewitem}[\statusDiscuss]{R1}{%
+  Reviewer comment goes here.
+}
+  \authornote[Warning]{Internal warning note goes here.}
+
+  \response{%
+    Author response goes here, referencing another comment
+    \seecomment{R1C1}.
+  }
+\end{reviewitem}
+
+% --- Comment 4: status LETTER ONLY -----------------------------------------
+\begin{reviewitem}[\statusLetter]{R1}{%
+  Reviewer comment goes here.
+}
+  \response{%
+    Author response goes here.
+  }
+\end{reviewitem}
+
+% --- Comment 5: default status (OPEN) --------------------------------------
+\begin{reviewitem}{R1}{%
+  Reviewer comment goes here.
+}
+  \response{%
+    Author response goes here.
+  }
+\end{reviewitem}
+
+\bigskip
+\noindent\textbf{Summary of changes for Reviewer 1}
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Comment & Topic & Status & Manuscript change \\
+\midrule
+\hyperref[cmt:R1C1]{R1C1} & Topic goes here & \statusDone    & Description goes here \\
+\hyperref[cmt:R1C2]{R1C2} & Topic goes here & \statusMS      & Description goes here \\
+\hyperref[cmt:R1C3]{R1C3} & Topic goes here & \statusDiscuss & Description goes here \\
+\hyperref[cmt:R1C4]{R1C4} & Topic goes here & \statusLetter  & Description goes here \\
+\hyperref[cmt:R1C5]{R1C5} & Topic goes here & \statusOpen    & Description goes here \\
+\bottomrule
+\end{tabular}
+\end{center}

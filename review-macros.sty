@@ -1,0 +1,151 @@
+% ============================================================
+%  review-macros.sty 
+%  Author: Santa Andria
+%  Created: 2026
+%  License: MIT License
+% ============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{review-macros}[2026/01/01 Review macros]
+
+\RequirePackage[dvipsnames, svgnames, x11names]{xcolor}
+\RequirePackage{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{etoolbox}
+\RequirePackage{xparse}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{ifthen}
+\tcbuselibrary{skins, breakable}
+
+% ── Color palette ────────────────────────────────────────────────────────────
+\definecolor{clr-open}      {HTML}{FFF3CD}
+\definecolor{clr-discuss}   {HTML}{D1ECF1}
+\definecolor{clr-letter}    {HTML}{D4EDDA}
+\definecolor{clr-ms}        {HTML}{CCE5FF}
+\definecolor{clr-done}      {HTML}{F8F9FA}
+\definecolor{clr-border}    {HTML}{6C757D}
+\definecolor{clr-del}       {HTML}{FFEBE6}
+\definecolor{clr-del-border}{HTML}{842029}
+\definecolor{clr-add}       {HTML}{EDF7EF}
+\definecolor{clr-add-border}{HTML}{155724}
+\definecolor{clr-excerpt}   {HTML}{F2F2F2}
+\definecolor{clr-note-border}       {HTML}{E6B800}
+\definecolor{clr-note}{HTML}{FFFAE6}
+
+% ── Status labels ─────────────────────────────────────────────────────────────
+\newcommand{\statusbadge}[2]{%
+  \tcbox[on line, colback=#1, colframe=#1!80!black,
+         boxsep=1pt, left=3pt, right=3pt, top=1pt, bottom=1pt,
+         arc=3pt, boxrule=0.4pt, fontupper=\scriptsize\bfseries\sffamily]{#2}%
+}
+
+\newcommand{\statusOpen}   {\statusbadge{clr-open}   {OPEN}}
+\newcommand{\statusDiscuss}{\statusbadge{clr-discuss}{DISCUSSING}}
+\newcommand{\statusLetter} {\statusbadge{clr-letter} {LETTER ONLY}}
+\newcommand{\statusMS}     {\statusbadge{clr-ms}     {MS CHANGE}}
+\newcommand{\statusDone}   {\statusbadge{clr-done}   {DONE \checkmark}}
+
+% ── Core comment block ────────────────────────────────────────────────────────
+%  Usage:
+%    \begin{reviewitem}[\statusDone]{R1}{Reviewer comment}
+%      \response{...}
+%    \end{reviewitem}
+
+\NewDocumentEnvironment{reviewitem}{ O{\statusOpen} m m }{%
+  \ifcsundef{c@#2}{\newcounter{#2}}{}%
+  \stepcounter{#2}%
+  \def\RI@label{#2C\arabic{#2}}%
+  \phantomsection\label{cmt:\RI@label}%
+  \begin{tcolorbox}[
+    breakable,
+    enhanced,
+    colback=white,
+    colframe=clr-border,
+    boxrule=0.5pt,
+    arc=3pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt,
+    title={%
+      \textcolor{clr-border}{\textbf{\RI@label}}%
+      \ifbool{draftmode}{\quad #1}{}%
+    },
+    attach boxed title to top left={yshift=-2mm, xshift=4mm},
+    boxed title style={colback=white, colframe=clr-border, boxrule=0.4pt, arc=2pt},
+    fonttitle=\small,
+  ]
+  \begin{tcolorbox}[
+    colback=clr-excerpt, colframe=clr-excerpt!80!black,
+    boxrule=0.3pt, arc=2pt,
+    left=4pt, right=4pt, top=3pt, bottom=3pt
+  ]
+  \itshape\small #3
+  \end{tcolorbox}
+}{%
+  \end{tcolorbox}\vspace{0.5em}%
+}
+
+% ── Author response ───────────────────────────────────────────────────────────
+\newcommand{\response}[1]{%
+  \par\vspace{0.3em}%
+  \noindent\textbf{\textsf{Response:}}\enspace #1%
+  \par\vspace{0.5em}%
+}
+
+% ── Internal author note (not shown when draftmode=false) ──────────────────────────────────────────────────────
+\newbool{draftmode}
+\setbool{draftmode}{true}
+
+% \authornote{Just a plain note.}                  % label: NOTE, no owner shown
+% \authornote[Warning]{Be careful here.}           % label: WARNING, no owner
+% \authornote[Note][Santa]{Needs double-checking.} % label: NOTE | Owner: Santa
+
+\NewDocumentCommand{\authornote}{ O{Note} O{} m }{%
+  \ifbool{draftmode}{%
+    \begin{tcolorbox}[
+      %colback=yellow!5, colframe=yellow!60!black,
+      colback=clr-note, colframe=clr-note-border,
+      boxrule=0.4pt, arc=2pt,
+      left=4pt, right=4pt, top=2pt, bottom=2pt,
+      title={\scriptsize\sffamily\bfseries \MakeUppercase{#1}%
+        \ifblank{#2}{}{\normalfont\ \textbar\ Owner: \textbf{#2}}%
+      },
+      fonttitle=\scriptsize
+    ]
+    \small #3
+    \end{tcolorbox}%
+  }{}%
+}
+
+% ── Manuscript change boxes ───────────────────────────────────────────────────
+\newenvironment{msexcerpt}[1][Revised text]{%
+  \begin{tcolorbox}[
+    title=#1,
+    colback=clr-add, colframe=clr-add-border,
+    boxrule=0.4pt, arc=2pt,
+    left=4pt, right=4pt, top=3pt, bottom=3pt,
+    fonttitle=\small\bfseries
+  ]
+  \begin{quote}\itshape\small
+}{%
+  \end{quote}\end{tcolorbox}%
+}
+
+\newenvironment{msoriginal}[1][Original text]{%
+  \begin{tcolorbox}[
+    title=#1,
+    colback=clr-del, colframe=clr-del-border,
+    boxrule=0.4pt, arc=2pt,
+    left=4pt, right=4pt, top=3pt, bottom=3pt,
+    fonttitle=\small\bfseries
+  ]
+  \begin{quote}\itshape\small
+}{
+  \end{quote}\end{tcolorbox}%
+}
+
+\newcommand{\showchange}[2]{%
+  \begin{msoriginal}#1\end{msoriginal}%
+  \begin{msexcerpt}#2\end{msexcerpt}%
+}
+
+% ── Cross-reference helper ────────────────────────────────────────────────────
+\newcommand{\seecomment}[1]{(see~\hyperref[cmt:#1]{#1})}

@@ -1,0 +1,23 @@
+% ============================================================
+%  review-config.sty 
+% ============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{review-config}[2026/01/01 Review configuration]
+
+
+% ── Journal  metadata ───────────────────────────────────────────
+\newcommand{\JournalName}{Water Resources Research}
+\newcommand{\ManuscriptTitle}{Manuscript Title}
+\newcommand{\ManuscriptID}{123456789}
+\newcommand{\RevisionRound}{1}               
+\newcommand{\SubmissionDate}{\today}
+\newcommand{\CorrespondingAuthor}{Name Surname} 
+% ── Author list ───────────────────────────────────────────────── 
+\renewcommand\Authfont{\normalsize} %authblk
+\renewcommand\Affilfont{\footnotesize}
+
+\newcommand{\AuthorList}{%
+\author[1]{Name Surname}
+
+\affil[1]{Department of ..., University of ..., City, State, Country}
+}
